@@ -91,8 +91,6 @@ namespace CasinoProject.Models
             {
                 if (this.Status == RoulettePosibleStatus.open)
                 {
-                    //Thread thread = new Thread(new ThreadStart(Play));
-                    //thread.Start();
                     Play();
                     foreach (Bet bet in Bets)
                     {
