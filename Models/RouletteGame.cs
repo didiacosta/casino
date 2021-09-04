@@ -18,9 +18,18 @@ namespace CasinoProject.Models
             var roulette = Roulettes.Where(r => r.Id == id);
             return roulette.FirstOrDefault();
         }
-        public int AddRoulette() {
-            var roulette = new Roulette(Roulettes.Count() + 1, RoulettePosibleStatus.open);
-            return roulette.Id;
+        public Response AddRoulette() {
+            try
+            {
+                var roulette = new Roulette(id: Roulettes.Count() + 1, status: RoulettePosibleStatus.open);
+                Roulettes.Add(roulette);
+                return new Response(message: "La ruleta se ha creado satisfactoriamente", data: roulette.Id);
+            }
+            catch {
+                return new Response(
+                    message: "no fue posible crear la ruleta, consulte con el administrador del sistema",
+                    data: 0);                
+            }
         }
     }
 }

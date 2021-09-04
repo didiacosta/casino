@@ -9,20 +9,24 @@ namespace CasinoProject.Models
     public class Bet
     {
         public int Id { get; set; }
-        public int userId { get; set; }
-        public Roulette roulette { get; set; }
-        public BetType betType { get; set; }
+        public int UserId { get; set; }
+        public BetType BetType { get; set; }
         [Range(0,36,ErrorMessage ="para la apuesta solo se permiten valores entre 0 y 36")] 
-        public int betNumber { get; set; }
-        public ColorRoulette betColor { get; set; }
-        public Bet(int id, int userid, Roulette roulette, BetType betType, int betNumber, ColorRoulette betColor)
+        public int BetNumber { get; set; }
+        public ColorRoulette BetColor { get; set; }
+        public Double Result { get; set; }
+        public Double Amount { get; set; }
+        public DateTime BetDate { get; }
+        public Bet(int id, int userid, BetType betType, int betNumber, Double amount, ColorRoulette betColor)
         {
             this.Id = id;
-            this.userId = userid;
-            this.roulette = roulette;
-            this.betType = betType;
-            this.betNumber = betNumber;
-            this.betColor = betColor;
+            this.UserId = userid;
+            this.BetType = betType;
+            this.BetNumber = betNumber;
+            this.BetColor = betColor;
+            this.Amount = amount;
+            this.Result = 0;
+            this.BetDate = DateTime.UtcNow;
         }
     }
 }
