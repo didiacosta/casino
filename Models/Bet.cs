@@ -11,7 +11,7 @@ namespace CasinoProject.Models
         public int Id { get; set; }
         public int UserId { get; set; }
         public BetType BetType { get; set; }
-        [Range(0,36,ErrorMessage ="para la apuesta solo se permiten valores entre 0 y 36")] 
+        //[Range(0,36,ErrorMessage ="para la apuesta solo se permiten valores entre 0 y 36")] 
         public int BetNumber { get; set; }
         public ColorRoulette BetColor { get; set; }
         public Double Result { get; set; }
@@ -28,5 +28,6 @@ namespace CasinoProject.Models
             this.Result = 0;
             this.BetDate = DateTime.UtcNow;
         }
+        public Bet() { }
     }
 }

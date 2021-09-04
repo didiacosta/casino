@@ -17,7 +17,7 @@ namespace CasinoProject.Models
         {
             return Bets;
         }
-        private int WinnerNumber;
+        private int WinnerNumber = 0;
         private ColorRoulette WinnerColor;
         private String WinnerColorString;
         public Bet GetBet(int id)
@@ -56,7 +56,6 @@ namespace CasinoProject.Models
                 return new Response(
                     message: "no fue posible agregar la apuesta, consulte con el administrador del sistema",
                     data: null);
-
             }
         }
         public Response Open() {
@@ -64,7 +63,6 @@ namespace CasinoProject.Models
             {
                 this.Status = RoulettePosibleStatus.open;
                 return new Response(message: "La ruleta ha sido abierta correctamente", data: this.Status);
-
             }
             catch
             {
@@ -76,8 +74,8 @@ namespace CasinoProject.Models
         private void Play()
         {
             Random random = new Random();
-            int winnerNumber = random.Next(0, 37);
-            if (winnerNumber % 2 == 0)
+            this.WinnerNumber = random.Next(0, 37);
+            if (this.WinnerNumber % 2 == 0)
             {
                 this.WinnerColor = ColorRoulette.red;
                 this.WinnerColorString = "rojo";
@@ -87,22 +85,33 @@ namespace CasinoProject.Models
                 this.WinnerColor = ColorRoulette.black;
                 this.WinnerColorString = "negro";
             }
+            this.Status = RoulettePosibleStatus.closed;
         }
         public Response Close() {
             try
             {
-                this.Play();
-                foreach (Bet bet in Bets) {
-                    if (bet.BetType == BetType.color) {
-                        bet.Result = (this.WinnerColor == bet.BetColor) ? bet.Amount * 1.8 : bet.Amount * -1;
+                if (this.Status == RoulettePosibleStatus.open)
+                {
+                    this.Play();
+                    foreach (Bet bet in Bets)
+                    {
+                        if (bet.BetType == BetType.color)
+                        {
+                            bet.Result = (this.WinnerColor == bet.BetColor) ? bet.Amount * 1.8 : bet.Amount * -1;
+                        }
+                        if (bet.BetType == BetType.number)
+                        {
+                            bet.Result = (this.WinnerNumber == bet.BetNumber) ? bet.Amount * 5 : bet.Amount * -1;
+                        }
                     }
-                    if (bet.BetType == BetType.number) {
-                        bet.Result = (this.WinnerNumber == bet.BetNumber) ? bet.Amount * 5 : bet.Amount * -1;
-                    }
+                    String message = "Las apuestas se han cerrado, el resultado es " +
+                        this.WinnerColorString + " " + this.WinnerNumber.ToString();
+                    return new Response(message: message, data: Bets);
                 }
-                String message = "Las apuestas se han cerrado, el resultado es " +
-                    this.WinnerColorString + " " + this.WinnerNumber.ToString();
-                return new Response(message: message, data: Bets);
+                else
+                {
+                    return new Response(message: "La ruleta " + this.Id + " se encuentra cerrada.", data: null);
+                }
             } catch {
                 return new Response(
                     message: "no fue posible cerrar la ruleta, consulte con el administrador del sistema",
