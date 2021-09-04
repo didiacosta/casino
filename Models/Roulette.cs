@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 namespace CasinoProject.Models
 {
     public class Roulette
@@ -31,18 +31,17 @@ namespace CasinoProject.Models
             {
                 if ((betType == BetType.color) && ((betColor != ColorRoulette.red) && (betColor != ColorRoulette.black)))
                 {
-                    return new Response(message: "Su apuesta es por color, debe elegir rojo o negro.", data: null);
+                    return new Response(message: "Su apuesta es por color, debe elegir rojo o negro.", 
+                        data: null);
                 }
-                if ((betType == BetType.number) && ((betNumber < 0) || (betNumber > 36)))
-                {
-                    return new Response(message: "Su apuesta es por numero, debe elegir un numero de 0 a 36.", data: null);
+                if ((betType == BetType.number) && ((betNumber < 0) || (betNumber > 36))) {
+                    return new Response(message: "Su apuesta es por numero, debe elegir un numero de 0 a 36.", 
+                        data: null);
                 }
-                if (this.Status == RoulettePosibleStatus.closed)
-                {
+                if (this.Status == RoulettePosibleStatus.closed) {
                     return new Response(message: "La Ruleta se encuentra cerrada, no es posible apostar.", data: null);
                 }
-                if (amount <= 0 || amount > 10000)
-                {
+                if (amount <= 0 || amount > 10000) {
                     return new Response(
                         message: "Solo se permiten apuestas de 1 a 10.000 dolares, no es posible apostar.", data: null);
                 }
@@ -92,7 +91,9 @@ namespace CasinoProject.Models
             {
                 if (this.Status == RoulettePosibleStatus.open)
                 {
-                    this.Play();
+                    //Thread thread = new Thread(new ThreadStart(Play));
+                    //thread.Start();
+                    Play();
                     foreach (Bet bet in Bets)
                     {
                         if (bet.BetType == BetType.color)

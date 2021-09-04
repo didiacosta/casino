@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using CasinoProject.Models;
-using Newtonsoft.Json.Linq;
-using System.Net.Http.Formatting;
-
 namespace CasinoProject.Controllers
 {
     [Route("api/[controller]")]
@@ -19,12 +12,12 @@ namespace CasinoProject.Controllers
         public IActionResult AddRoulette()
         {
             Response response = rouletteGame.AddRoulette();
-            if (Convert.ToInt32(response.data) == 0)
+            if (Convert.ToInt32(value: response.data) == 0)
             {
                 return BadRequest(error: response.message);
             }
             else {
-                return CreatedAtAction(nameof(AddRoulette), value: response);
+                return CreatedAtAction(actionName: nameof(AddRoulette), value: response);
             }
         }
         [HttpGet("open/{id}")]

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-
 namespace CasinoProject.Models
 {
     public class RouletteGame
     {
         public static List<Roulette> Roulettes = new List<Roulette>() {
-            new Roulette(1, RoulettePosibleStatus.open)
+            new Roulette(id: 1, status: RoulettePosibleStatus.open)
         };
         public IEnumerable<Roulette> GetRoulettes() 
         {
